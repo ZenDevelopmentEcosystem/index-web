@@ -1,2 +1,3 @@
 # index-web
-Web frontend for nginx-proxy-index
+
+Web frontend for [nginx-proxy-index](https://github.com/ZenDevelopmentEcosystem/nginx-proxy-index).
