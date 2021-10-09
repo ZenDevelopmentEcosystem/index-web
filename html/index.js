@@ -1,4 +1,7 @@
 
+var gConfig = null;
+var gData = null;
+
 function setTableHeaders(fragment, headers) {
     var headerRow = $('<tr/>');
     headerRow.addClass('header');
@@ -23,22 +26,26 @@ function setTableSites(fragment, sites) {
 }
 
 /**
- * Restructures the data to a map where the key is the groups and the value the list
- * of sites that belong to that group.
+ * Restructures the data to a map where the key is the groupIds and the value the list
+ * of sites (sorted alphabetical) that belong to that group.
  */
 function transformData(data) {
     var groups = [...new Set(data.sites.map(function(site) { return site.group; }))]
         .sort(function(a, b) { return a.localeCompare(b); });
     var result = {}
-    $.each(groups, function(index, groupName) {
-        result[groupName] = $.grep(data.sites, function(site) { return site.group === groupName; })
+    $.each(groups, function(index, groupId) {
+        result[groupId] = $.grep(data.sites, function(site) { return site.group === groupId; })
             .sort(function(a, b) { return a.name.localeCompare(b.name); });
     });
     return result;
 }
 
-function createGroupSitesTable(fragment, groupName, sites) {
-    $('<h2>').text(groupName).appendTo(fragment);
+function transformGroups(groups) {
+    return groups.sort(function(a, b) { return a.order.toString().localeCompare(b.order.toString())});
+}
+
+function createGroupSitesTable(fragment, group, sites) {
+    $('<h2>').text(group.name).appendTo(fragment);
     var sitesTable = $('<table>');
     setTableHeaders(sitesTable, ['Site', 'Description']);
     setTableSites(sitesTable, sites);
@@ -46,16 +53,20 @@ function createGroupSitesTable(fragment, groupName, sites) {
 }
 
 function setSites(data) {
+    gData = data;
     var fragment = new DocumentFragment();
-    var content = $('#content');
     if (data.sites.length > 0) {
         data = transformData(data);
-        for (group in data) {
-            createGroupSitesTable(fragment, group, data[group]);
+        if (gConfig.useGroups) {
+            groups = transformGroups(gConfig.groups);
+            $.each(groups, function(index, group) {
+                createGroupSitesTable(fragment, group, data[group.id]);
+            });
         }
     } else {
         $('<h2>').text('No sites in index, try again later').appendTo(fragment);
     }
+    var content = $('#content');
     content.append(fragment);
 }
 
@@ -64,7 +75,9 @@ function loadSites(index) {
 }
 
 function setConfig(cfg) {
-    loadSites(cfg.index);
+    gConfig = cfg;
+    var index = cfg.index || 'data/index.json';
+    loadSites(index);
 }
 
 function loadConfig() {

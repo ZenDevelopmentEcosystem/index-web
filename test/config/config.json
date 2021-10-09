@@ -1,7 +1,7 @@
 
 {
     "index": "data/index2.json",
-    "use-groups": true,
+    "useGroups": true,
     "groups": [
         {
             "name": "Jedi",

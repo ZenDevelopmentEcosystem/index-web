@@ -1,5 +1,5 @@
 {
     "index": "data/index.json",
-    "use-groups": false,
+    "useGroups": false,
     "groups": []
 }
