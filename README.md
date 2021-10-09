@@ -32,7 +32,7 @@ The config.json format is as follows:
 ```json
 {
     "index": "data/index.json",
-    "use-groups": false,
+    "useGroups": false,
     "groups": [
         {
             "name": "Group Name",
@@ -57,7 +57,7 @@ group, id
 
 group, order
 : The listing order among the groups. Groups with the same order, is sorted alphabetical.
-  If `use-groups` is false, the order has no effect. and the sites will be sorted alphabetical.
+  If `useGroups` is false, the order has no effect. and the sites will be sorted alphabetical.
 
 Development
 -----------
