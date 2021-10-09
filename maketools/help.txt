@@ -1,0 +1,14 @@
+Usage: make TARGET ARGS
+
+    help                Print this help.
+    make-help           Print targets related to development of the make-system
+    readme              Print README.
+
+Development:
+    check               Run static, test.
+    test                Run all unit test.
+    static              Run static code analysis.
+    clean               Remove build-artifacts.
+    cleanup             Remove all produced artifacts including docker assets.
+
+Set Q= to echo commands when run
