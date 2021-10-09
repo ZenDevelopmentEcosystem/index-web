@@ -1,0 +1,16 @@
+{
+    "sites": [
+        {
+            "name": "Skynet",
+            "url": "https://skynet.local",
+            "description": "Evil AI",
+            "group": "evil"
+        }
+        ,{
+            "name": "Jedi Archives",
+            "url": "https://jedi-archives.local",
+            "description": "The repository of Jedi knowledge",
+            "group": "jedi"
+        }
+    ]
+}
