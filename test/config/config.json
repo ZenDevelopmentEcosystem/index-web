@@ -1,0 +1,17 @@
+
+{
+    "index": "data/index2.json",
+    "use-groups": true,
+    "groups": [
+        {
+            "name": "Jedi",
+            "id": "jedi",
+            "order": 0
+        },
+        {
+            "name": "Evil Stuff",
+            "id": "evil",
+            "order": 1
+        }
+    ]
+}
