@@ -56,12 +56,16 @@ function setSites(data) {
     gData = data;
     var fragment = new DocumentFragment();
     if (data.sites.length > 0) {
-        data = transformData(data);
         if (gConfig.useGroups) {
+            data = transformData(data);
             groups = transformGroups(gConfig.groups);
             $.each(groups, function(index, group) {
                 createGroupSitesTable(fragment, group, data[group.id]);
             });
+        } else {
+            var sites = data.sites.sort(function(a, b) { return a.name.localeCompare(b.name) });
+            var group = { name: "" };
+            createGroupSitesTable(fragment, group, sites);
         }
     } else {
         $('<h2>').text('No sites in index, try again later').appendTo(fragment);
