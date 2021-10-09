@@ -66,7 +66,7 @@ function setErrorMessage( jqxhr, textStatus, error ) {
 };
 
 function populateSites() {
-    $.getJSON('index.json', setSites).fail(setErrorMessage);
+    $.getJSON('data/index.json', setSites).fail(setErrorMessage);
 }
 
 $(document).ready(function(){
