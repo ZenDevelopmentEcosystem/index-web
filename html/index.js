@@ -59,16 +59,24 @@ function setSites(data) {
     content.append(fragment);
 }
 
+function loadSites(index) {
+    $.getJSON(index, setSites).fail(setErrorMessage);
+}
+
+function setConfig(cfg) {
+    loadSites(cfg.index);
+}
+
+function loadConfig() {
+    $.getJSON('config/config.json', setConfig).fail(setErrorMessage);
+}
+
 function setErrorMessage( jqxhr, textStatus, error ) {
-    var err = textStatus + ', ' + error;
+    var err = textStatus + ', ' + error + ', ' + jqxhr.getAllResponseHeaders();
     console.error( 'Request Failed: ' + err );
     $('#content').append($('<h2>').text(err).addClass('error'));
 };
 
-function populateSites() {
-    $.getJSON('data/index.json', setSites).fail(setErrorMessage);
-}
-
 $(document).ready(function(){
-    populateSites();
+    loadConfig();
 });
