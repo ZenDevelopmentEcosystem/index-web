@@ -6,12 +6,12 @@
         {
             "name": "Jedi",
             "id": "jedi",
-            "order": 0
+            "order": 10
         },
         {
             "name": "Evil Stuff",
             "id": "evil",
-            "order": 1
+            "order": 2
         }
     ]
 }
