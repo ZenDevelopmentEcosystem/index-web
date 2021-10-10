@@ -41,7 +41,7 @@ function transformData(data) {
 }
 
 function transformGroups(groups) {
-    return groups.sort(function(a, b) { return a.order.toString().localeCompare(b.order.toString())});
+    return groups.sort(function(a, b) { return a.order.toString().localeCompare(b.order.toString(), undefined, { numeric: true })});
 }
 
 function createGroupSitesTable(fragment, group, sites) {
