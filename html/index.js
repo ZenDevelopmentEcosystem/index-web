@@ -2,27 +2,30 @@
 var gConfig = null;
 var gData = null;
 
+/**
+ * Add headers to a table.
+ * @param {Object} fragment HTML fragment to append headers to.
+ * @param {Object[]} headers
+ * @param {String} headers[].text - Heading text
+ * @param {Number} headers[].width - Column width
+ */
 function setTableHeaders(fragment, headers) {
+    var tableHead = $('<thead class="table-dark"/>');
     var headerRow = $('<tr/>');
-    headerRow.addClass('header');
-    $.each(headers, function(_, header) { headerRow.append($('<th></th>').text(header)); });
-    headerRow.appendTo(fragment);
+    headers.forEach(header => headerRow.append($(`<th style="width: ${header.width}%"></th>`).text(header.text)));
+    headerRow.appendTo(tableHead);
+    tableHead.appendTo(fragment);
 }
 
 function setTableSites(fragment, sites) {
-    $.each(sites, function(_, site) {
-        var row = $('<tr/>');
-        var siteCell = $('<td></td>')
-        var link = $('<a>', {
-            text: site.name,
-            title: site.name,
-            href: site.url
-        });
-        siteCell.append(link);
-        row.append(siteCell);
-        row.append($('<td></td>').text(site.description))
-        row.appendTo(fragment);
+    var tableBody = $('<tbody/>');
+    sites.forEach(site => {
+        var row = $(`<tr/>`);
+        row.append($('<td/>').append($(`<a href="${site.url}" class="text-reset fw-bold"/>`).text(site.name)));
+        row.append($('<td/>').append($(`<a href="${site.url}" class="text-reset"/>`).text(site.description)));
+        row.appendTo(tableBody);
     });
+    tableBody.appendTo(fragment);
 }
 
 /**
@@ -30,24 +33,27 @@ function setTableSites(fragment, sites) {
  * of sites (sorted alphabetical) that belong to that group.
  */
 function transformData(data) {
-    var groups = [...new Set(data.sites.map(function(site) { return site.group; }))]
-        .sort(function(a, b) { return a.localeCompare(b); });
+    var groups = [...new Set(data.sites.map(site => site.group))]
+        .sort((a, b) => a.localeCompare(b));
     var result = {}
-    $.each(groups, function(index, groupId) {
-        result[groupId] = $.grep(data.sites, function(site) { return site.group === groupId; })
-            .sort(function(a, b) { return a.name.localeCompare(b.name); });
+    groups.forEach(groupId => {
+        result[groupId] = data.sites.filter(site => site.group === groupId)
+            .sort((a, b) => a.name.localeCompare(b.name));
     });
     return result;
 }
 
 function transformGroups(groups) {
-    return groups.sort(function(a, b) { return a.order.toString().localeCompare(b.order.toString(), undefined, { numeric: true })});
+    return groups.sort((a, b) => a.order.toString().localeCompare(b.order.toString(), undefined, { numeric: true }));
 }
 
 function createGroupSitesTable(fragment, group, sites) {
-    $('<h2>').text(group.name).appendTo(fragment);
-    var sitesTable = $('<table>');
-    setTableHeaders(sitesTable, ['Site', 'Description']);
+    $('<h2 class="mt-3 display-6">').text(group.name).appendTo(fragment);
+    var sitesTable = $('<table class="table table-striped table-fade-hover table-sm">');
+    setTableHeaders(sitesTable, [
+        {text: 'Site', width: 20},
+        {text: 'Description', width: 80}
+    ]);
     setTableSites(sitesTable, sites);
     sitesTable.appendTo(fragment);
 }
@@ -58,12 +64,10 @@ function setSites(data) {
     if (data.sites.length > 0) {
         if (gConfig.useGroups) {
             data = transformData(data);
-            groups = transformGroups(gConfig.groups);
-            $.each(groups, function(index, group) {
-                createGroupSitesTable(fragment, group, data[group.id]);
-            });
+            var groups = transformGroups(gConfig.groups);
+            groups.forEach(group => createGroupSitesTable(fragment, group, data[group.id]));
         } else {
-            var sites = data.sites.sort(function(a, b) { return a.name.localeCompare(b.name) });
+            var sites = data.sites.sort((a, b) => a.name.localeCompare(b.name));
             var group = { name: "" };
             createGroupSitesTable(fragment, group, sites);
         }
