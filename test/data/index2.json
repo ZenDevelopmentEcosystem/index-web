@@ -1,6 +1,12 @@
 {
     "sites": [
         {
+            "name": "Skynet Enhanced",
+            "url": "https://skynet.enhanced.local",
+            "description": "Evil AI 2.0",
+            "group": "evil"
+        }
+        ,{
             "name": "Skynet",
             "url": "https://skynet.local",
             "description": "Evil AI",
