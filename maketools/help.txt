@@ -10,5 +10,7 @@ Development:
     static              Run static code analysis.
     clean               Remove build-artifacts.
     cleanup             Remove all produced artifacts including docker assets.
+    docker-run          Run nginx container as index-web
+    docker-stop         Stop index-web container
 
 Set Q= to echo commands when run

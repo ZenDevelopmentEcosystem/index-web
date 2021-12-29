@@ -65,11 +65,13 @@ Development
 To run the application, with test data:
 
 ```console
-docker run --rm -p "8081:80" \
-    -v $(pwd)/html:/usr/share/nginx/html \
-    -v $(pwd)/test/data:/usr/share/nginx/html/data \
-    -v $(pwd)/test/config:/usr/share/nginx/html/config \
-    --name index-web -d nginx
+make docker-run
+```
+
+And to stop the test-container:
+
+```console
+make docker-stop
 ```
 
 Run `make check` before pull-requests.
