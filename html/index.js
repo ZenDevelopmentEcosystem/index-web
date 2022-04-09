@@ -43,7 +43,7 @@ function dataByGroupId(data) {
 }
 
 /**
- * Restructure the data to a map where the kye is the host(name) and the  value
+ * Restructure the data to a map where the key is the host(name) and the value
  * the list of sites (sorted alphabetical) that belong to that host.
  */
 function dataByHost(data) {
@@ -76,7 +76,7 @@ function transformGroups(groups) {
 function createSitesTable(fragment, name, sites) {
     $('<h2 \>', { 'class': 'mt-3 display-6'}).text(name).appendTo(fragment);
     var sitesTable = $('<table \>', { 'class': 'table table-striped table-fade-hover table-sm' });
-    setTableHeaders(sitesTable, [ {text: 'Site', width: 20}, {text: 'Description', width: 80} ]);
+    setTableHeaders(sitesTable, [ {text: 'Site', width: 25}, {text: 'Description', width: 75} ]);
     setTableSites(sitesTable, sites);
     sitesTable.appendTo(fragment);
 }
@@ -178,7 +178,9 @@ function setTitle(title) {
 }
 
 function loadSites(index, config) {
-    $.getJSON(index, (data) => setSites(data, config)).fail(setErrorMessage);
+    $.getJSON(index, (data) => setSites(data, config)).fail(
+        (jqxhr, textStatus, error) => setErrorMessage(jqxhr, textStatus, error,
+            'Failed to load site information!') );
 }
 
 function setConfig(data) {
@@ -190,13 +192,16 @@ function setConfig(data) {
 }
 
 function loadConfig() {
-    $.getJSON('config/config.json', setConfig).fail(setErrorMessage);
+    $.getJSON('config/config.json', setConfig).fail(
+        (jqxhr, textStatus, error) => setErrorMessage(jqxhr, textStatus, error,
+            'Failed to load configuration!'));
 }
 
-function setErrorMessage( jqxhr, textStatus, error ) {
-    var err = textStatus + ', ' + error + ', ' + jqxhr.getAllResponseHeaders();
-    console.error( 'Request Failed: ' + err );
-    $('#content').append($('<h2>').text(err).addClass('error'));
+function setErrorMessage( jqxhr, textStatus, error, context ) {
+    var err = `Details: ${textStatus}, ${error}, ${jqxhr.getAllResponseHeaders()}`;
+    console.error(`Request Failed: ${context}; ${err}`);
+    $('#content').append($('<h2\>').text(context));
+    $('#content').append($('<p\>').text(err));
 };
 
 $(document).ready(function(){
