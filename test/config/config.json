@@ -1,7 +1,10 @@
 
 {
     "index": "data/index2.json",
-    "useGroups": true,
+    "title": "My Awesome Sites",
+    "allGroupsTab": true,
+    "allTHostsTab": true,
+    "flatTab": true,
     "groups": [
         {
             "name": "Jedi",
@@ -12,6 +15,11 @@
             "name": "Evil Stuff",
             "id": "evil",
             "order": 2
+        },
+        {
+            "name": "Unspecified",
+            "id": "",
+            "order": 100
         }
     ]
 }

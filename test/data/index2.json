@@ -4,19 +4,33 @@
             "name": "Skynet Enhanced",
             "url": "https://skynet.enhanced.local",
             "description": "Evil AI 2.0",
-            "group": "evil"
+            "group": "evil",
+            "host": "Earth",
+            "tags": ["AI", "Terminator"]
         }
         ,{
             "name": "Skynet",
             "url": "https://skynet.local",
             "description": "Evil AI",
-            "group": "evil"
+            "group": "evil",
+            "host": "Earth",
+            "tags": ["AI", "Terminator"]
         }
         ,{
             "name": "Jedi Archives",
             "url": "https://jedi-archives.local",
             "description": "The repository of Jedi knowledge",
-            "group": "jedi"
+            "group": "jedi",
+            "host": "Coruscant",
+            "tags": ["Star Wars"]
+        }
+        ,{
+            "name": "The void",
+            "url": "https://void.local",
+            "description": "Emptiness",
+            "group": "",
+            "host": "",
+            "tags": ["Vacuum"]
         }
     ]
 }

@@ -1,5 +1,8 @@
 {
     "index": "data/index.json",
-    "useGroups": false,
+    "title": "Index",
+    "allGroupsTab": false,
+    "allTHostsTab": false,
+    "flatTab": true,
     "groups": []
 }
