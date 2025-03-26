@@ -62,7 +62,7 @@ group, order
 Development
 -----------
 
-To run the application, with test data:
+To run the application, with test data (http://localhost:8081/):
 
 ```console
 make docker-run
