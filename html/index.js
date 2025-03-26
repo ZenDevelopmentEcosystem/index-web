@@ -16,6 +16,7 @@ function setTableHeaders(fragment, headers) {
 
 function setTableSites(fragment, sites) {
     var tableBody = $('<tbody/>');
+    sites = sites || [];
     sites.forEach(site => {
         var row = $('<tr/>');
         row.append($('<td/>').append($('<a \>', {
@@ -150,26 +151,30 @@ function createFlatGroupsTab(data, config) {
     return createTab('Flat list', fragment);
 }
 
-function setSites(data, config) {
-    var fragment = new DocumentFragment();
-    if (data.sites.length > 0) {
-        var tabs = [];
-        if (config.allGroupsTab) {
-            tabs.push(createAllGroupsTab(data, config));
+function processSites(data, config) {
+    try {
+        var fragment = new DocumentFragment();
+        if (data.sites.length > 0) {
+            var tabs = [];
+            if (config.allGroupsTab) {
+                tabs.push(createAllGroupsTab(data, config));
+            }
+            if (config.allTHostsTab) {
+                tabs.push(createAllHostsTab(data, config));
+            }
+            if (config.flatTab) {
+                tabs.push(createFlatGroupsTab(data, config));
+            }
+            renderTabs(fragment, tabs);
+        } else {
+            $('<h2>').text('No sites in index, try again later').appendTo(fragment);
         }
-        if (config.allTHostsTab) {
-            tabs.push(createAllHostsTab(data, config));
-        }
-        if (config.flatTab) {
-            tabs.push(createFlatGroupsTab(data, config));
-        }
-        renderTabs(fragment, tabs);
-    } else {
-        $('<h2>').text('No sites in index, try again later').appendTo(fragment);
+        var content = $('#content');
+        content.append(fragment);
+        $('#vtablist button:eq(0)').tab('show');
+    } catch (e) {
+        setErrorMessage('Unexpected error while processing sites', e);
     }
-    var content = $('#content');
-    content.append(fragment);
-    $('#vtablist button:eq(0)').tab('show');
 }
 
 function setTitle(title) {
@@ -178,30 +183,38 @@ function setTitle(title) {
 }
 
 function loadSites(index, config) {
-    $.getJSON(index, (data) => setSites(data, config)).fail(
-        (jqxhr, textStatus, error) => setErrorMessage(jqxhr, textStatus, error,
+    $.getJSON(index, (data) => processSites(data, config)).fail(
+        (jqxhr, textStatus, error) => setRequestErrorMessage(jqxhr, textStatus, error,
             'Failed to load site information!') );
 }
 
-function setConfig(data) {
-    var cfg = data;
-    var index = cfg.index || 'data/index.json';
-    var title = cfg.title || 'Index';
-    setTitle(title);
-    loadSites(index, cfg);
+function processConfig(data) {
+    try {
+        var cfg = data;
+        var index = cfg.index || 'data/index.json';
+        var title = cfg.title || 'Index';
+        setTitle(title);
+        loadSites(index, cfg);
+    } catch (e) {
+        setErrorMessage('Unexpected error while processing config', e);
+    }
 }
 
 function loadConfig() {
-    $.getJSON('config/config.json', setConfig).fail(
-        (jqxhr, textStatus, error) => setErrorMessage(jqxhr, textStatus, error,
+    $.getJSON('config/config.json', processConfig).fail(
+        (jqxhr, textStatus, error) => setRequestErrorMessage(jqxhr, textStatus, error,
             'Failed to load configuration!'));
 }
 
-function setErrorMessage( jqxhr, textStatus, error, context ) {
-    var err = `Details: ${textStatus}, ${error}, ${jqxhr.getAllResponseHeaders()}`;
-    console.error(`Request Failed: ${context}; ${err}`);
+function setErrorMessage(context, message) {
+    console.error(`Error: ${context}; ${message}`);
     $('#content').append($('<h2\>').text(context));
-    $('#content').append($('<p\>').text(err));
+    $('#content').append($('<p\>').text(message));
+}
+
+function setRequestErrorMessage( jqxhr, textStatus, error, context ) {
+    var err = `Details: ${textStatus}, ${error}, ${jqxhr.getAllResponseHeaders()}`;
+    setErrorMessage(context, err);
 };
 
 $(document).ready(function(){

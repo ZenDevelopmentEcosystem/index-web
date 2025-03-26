@@ -20,6 +20,11 @@
             "name": "Unspecified",
             "id": "",
             "order": 100
+        },
+        {
+            "name": "Group With No Hosts",
+            "id": "empty",
+            "order": 101
         }
     ]
 }
