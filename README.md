@@ -6,7 +6,7 @@ Web frontend for [nginx-proxy-index](https://github.com/ZenDevelopmentEcosystem/
 Usage
 -----
 
-The application is generally bundled with the image `perbohlin/nginx-proxy-index`,
+The application is generally bundled with the image `ghcr.io/zendevelopmentecosystem/nginx-proxy-index`,
  [nginx-proxy-index](https://github.com/ZenDevelopmentEcosystem/nginx-proxy-index)
 and does not need to be run separately.
 
